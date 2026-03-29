@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --color-fpl-primary: #0e3050;
+  --color-fpl-dark: #001f34;
+  --color-fpl-accent: #1a8fc4;
+  --color-fpl-accent-hover: #1578a8;
+  --color-fpl-light: #e8f4fd;
+  --color-fpl-border: #1a3a5c;
+  --color-fpl-card: #0a2640;
+  --color-fpl-muted: #8ba3bd;
+}
+
+@layer base {
+  body {
+    @apply bg-fpl-dark text-white antialiased;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-fpl-card/80 backdrop-blur-sm border border-fpl-border rounded-xl;
+  }
+}
