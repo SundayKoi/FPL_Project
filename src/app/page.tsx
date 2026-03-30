@@ -9,8 +9,7 @@ import { useLeagueData } from "@/hooks/useLeagueData";
 
 // Home tab widgets
 import { ScoreboardTicker } from "@/components/home/ScoreboardTicker";
-import { HeroArticle } from "@/components/home/HeroArticle";
-import { NewsFeed } from "@/components/home/NewsFeed";
+import { WelcomeCard } from "@/components/home/WelcomeCard";
 import { StandingsWidget } from "@/components/home/StandingsWidget";
 import { PlayerLeaders } from "@/components/home/PlayerLeaders";
 import { UpcomingSchedule } from "@/components/home/UpcomingSchedule";
@@ -23,6 +22,7 @@ import { StandingsView } from "@/components/views/StandingsView";
 import { StatsView } from "@/components/views/StatsView";
 import { TeamsView } from "@/components/views/TeamsView";
 import { PlayersView } from "@/components/views/PlayersView";
+import { SignUpView } from "@/components/views/SignUpView";
 
 import { Loader2 } from "lucide-react";
 
@@ -69,6 +69,8 @@ export default function Home() {
         return <StatsView />;
       case "Teams":
         return <TeamsView teams={data.teams} rosters={data.rosters} standings={data.standings} isMobile={isMobile} />;
+      case "Sign Up":
+        return <SignUpView />;
       default:
         return renderHomeTab();
     }
@@ -80,8 +82,7 @@ export default function Home() {
         <div className="grid grid-cols-[280px_1fr_280px] gap-5">
           {/* Left column */}
           <div className="space-y-4">
-            <HeroArticle articles={data.articles} />
-            <NewsFeed articles={data.articles} />
+            <WelcomeCard onSignUp={() => setActiveTab("Sign Up")} />
           </div>
 
           {/* Center column */}
@@ -102,12 +103,11 @@ export default function Home() {
     // Single column for tablet/mobile
     return (
       <div className="space-y-4">
-        <HeroArticle articles={data.articles} />
+        <WelcomeCard onSignUp={() => setActiveTab("Sign Up")} />
         <StandingsWidget standings={data.standings} onViewStandings={() => setActiveTab("Standings")} />
         <TwitchStreams embeds={data.twitchEmbeds} />
         <UpcomingSchedule matches={data.matches} />
         <PlayerLeaders players={data.players} />
-        <NewsFeed articles={data.articles} />
       </div>
     );
   };

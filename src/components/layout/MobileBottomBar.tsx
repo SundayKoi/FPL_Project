@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Trophy, BarChart3, Users } from "lucide-react";
+import { Home, Trophy, BarChart3, Users, UserPlus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Tab } from "./Navbar";
 
@@ -8,8 +8,8 @@ const tabs: { label: Tab; icon: typeof Home }[] = [
   { label: "Home", icon: Home },
   { label: "Scores", icon: Trophy },
   { label: "Standings", icon: BarChart3 },
-  { label: "Stats", icon: BarChart3 },
   { label: "Teams", icon: Users },
+  { label: "Sign Up", icon: UserPlus },
 ];
 
 interface Props {

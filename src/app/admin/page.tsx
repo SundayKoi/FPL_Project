@@ -4,7 +4,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import {
   Users, Shield, ClipboardList, Calendar,
-  FileCheck, Newspaper, Twitter, Tv, Layers, Trophy,
+  FileCheck, Tv, Layers, Trophy,
 } from "lucide-react";
 
 import { TeamsTab } from "@/components/admin/TeamsTab";
@@ -12,8 +12,6 @@ import { PlayersTab } from "@/components/admin/PlayersTab";
 import { RostersTab } from "@/components/admin/RostersTab";
 import { ScheduleTab } from "@/components/admin/ScheduleTab";
 import { ApplicationsTab } from "@/components/admin/ApplicationsTab";
-import { ArticlesTab } from "@/components/admin/ArticlesTab";
-import { TwitterTab } from "@/components/admin/TwitterTab";
 import { TwitchTab } from "@/components/admin/TwitchTab";
 import { DivisionsTab } from "@/components/admin/DivisionsTab";
 import { SeasonsTab } from "@/components/admin/SeasonsTab";
@@ -23,9 +21,7 @@ const ADMIN_TABS = [
   { label: "Players", icon: Users },
   { label: "Rosters", icon: ClipboardList },
   { label: "Schedule", icon: Calendar },
-  { label: "Applications", icon: FileCheck },
-  { label: "Articles", icon: Newspaper },
-  { label: "Twitter", icon: Twitter },
+  { label: "Player Applications", icon: FileCheck },
   { label: "Twitch", icon: Tv },
   { label: "Divisions", icon: Layers },
   { label: "Seasons", icon: Trophy },
@@ -44,9 +40,7 @@ export default function AdminDashboard() {
       case "Players": return <PlayersTab key={refreshKey} />;
       case "Rosters": return <RostersTab key={refreshKey} />;
       case "Schedule": return <ScheduleTab key={refreshKey} />;
-      case "Applications": return <ApplicationsTab key={refreshKey} />;
-      case "Articles": return <ArticlesTab key={refreshKey} />;
-      case "Twitter": return <TwitterTab key={refreshKey} />;
+      case "Player Applications": return <ApplicationsTab key={refreshKey} />;
       case "Twitch": return <TwitchTab key={refreshKey} />;
       case "Divisions": return <DivisionsTab key={refreshKey} onRefresh={refresh} />;
       case "Seasons": return <SeasonsTab key={refreshKey} />;

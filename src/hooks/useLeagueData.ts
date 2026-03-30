@@ -44,19 +44,6 @@ export interface Standing {
   teams?: Team & { divisions?: { name: string } };
 }
 
-export interface Article {
-  id: string;
-  title: string;
-  subtitle?: string;
-  body?: string;
-  tag?: string;
-  article_type?: string;
-  author?: string;
-  published_at?: string;
-  is_published?: boolean;
-  image_url?: string;
-}
-
 export interface Split {
   id: string;
   name: string;
@@ -111,17 +98,6 @@ export interface Game {
   game_started_at?: string;
 }
 
-export interface TwitterFeed {
-  id: string;
-  feed_type: "timeline" | "tweet";
-  handle?: string;
-  tweet_url?: string;
-  title?: string;
-  is_active: boolean;
-  sort_order: number;
-  created_at?: string;
-}
-
 export interface TwitchEmbed {
   id: string;
   embed_type: "channel" | "clip" | "youtube";
@@ -139,10 +115,8 @@ export interface LeagueData {
   standings: Standing[];
   players: Player[];
   rosters: Roster[];
-  articles: Article[];
   splits: Split[];
   games: Game[];
-  twitterFeeds: TwitterFeed[];
   twitchEmbeds: TwitchEmbed[];
   loading: boolean;
   refresh: () => void;
@@ -153,37 +127,33 @@ type LeagueDataState = Omit<LeagueData, "refresh">;
 export function useLeagueData(): LeagueData {
   const [data, setData] = useState<LeagueDataState>({
     teams: [], matches: [], standings: [], players: [], rosters: [],
-    articles: [], splits: [], games: [], twitterFeeds: [], twitchEmbeds: [],
+    splits: [], games: [], twitchEmbeds: [],
     loading: true,
   });
 
   const load = useCallback(async () => {
     try {
-      const [teams, matches, standings, articles, splits] = await Promise.all([
+      const [teams, matches, standings, splits] = await Promise.all([
         db("teams", { query: "?select=*,divisions(name)&is_active=eq.true&order=name" }),
         db("matches", { query: "?select=*,team_blue:teams!matches_team_blue_id_fkey(id,name,abbreviation,color_primary,color_accent,logo_url),team_red:teams!matches_team_red_id_fkey(id,name,abbreviation,color_primary,color_accent,logo_url)&order=scheduled_at.desc.nullslast&limit=50" }),
         db("standings", { query: "?select=*,teams(id,name,abbreviation,color_primary,color_accent,logo_url,divisions(name))&order=wins.desc" }),
-        db("articles", { query: "?select=*&is_published=eq.true&order=published_at.desc.nullslast&limit=10" }),
         db("splits", { query: "?select=*,seasons(name)&is_active=eq.true&limit=1" }),
       ]);
 
       let players: Player[] = [];
       let rosters: Roster[] = [];
       let games: Game[] = [];
-      let twitterFeeds: TwitterFeed[] = [];
       let twitchEmbeds: TwitchEmbed[] = [];
 
       try {
-        const [roster, stats, gamesData, twFeeds, twEmbeds] = await Promise.all([
+        const [roster, stats, gamesData, twEmbeds] = await Promise.all([
           db("rosters", { query: "?select=*,players(id,display_name,riot_game_name,riot_tag_line),teams(id,name,abbreviation,color_primary,color_accent,logo_url)&left_at=is.null" }),
           db("player_game_stats", { query: "?select=player_id,kills,deaths,assists,total_minions_killed,neutral_minions_killed,vision_score,total_damage_dealt_to_champions,gold_earned,win,is_mvp" }),
           db("games", { query: "?select=id,match_id,riot_match_id,blue_team_id,red_team_id,winner_team_id,game_duration,game_started_at&order=game_started_at.desc.nullslast&limit=50" }),
-          db("twitter_feeds", { query: "?select=*&is_active=eq.true&order=sort_order,created_at.desc" }),
           db("twitch_embeds", { query: "?select=*&is_active=eq.true&order=sort_order,created_at.desc" }),
         ]);
         rosters = roster || [];
         games = gamesData || [];
-        twitterFeeds = twFeeds || [];
         twitchEmbeds = twEmbeds || [];
 
         const agg: Record<string, { gp: number; kills: number; deaths: number; assists: number; cs: number; wins: number; mvps: number; damage: number; gold: number }> = {};
@@ -228,8 +198,8 @@ export function useLeagueData(): LeagueData {
 
       setData({
         teams: teams || [], matches: matches || [], standings: standings || [],
-        players, rosters, articles: articles || [], splits: splits || [],
-        games: games || [], twitterFeeds, twitchEmbeds, loading: false,
+        players, rosters, splits: splits || [],
+        games: games || [], twitchEmbeds, loading: false,
       });
     } catch (e) {
       console.error("Failed to load league data:", e);
