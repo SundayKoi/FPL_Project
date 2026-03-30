@@ -1,64 +1,86 @@
-import { Users, Film, FileSpreadsheet, ExternalLink } from "lucide-react";
-import { Card } from "@/components/ui/Card";
-import Link from "next/link";
-import { GOOGLE_SHEETS_URL } from "@/lib/constants";
+"use client";
 
-const quickLinks = [
-  {
-    label: "Player Signups",
-    href: "/admin/signups",
-    icon: Users,
-    description: "View and manage player registrations",
-  },
-  {
-    label: "VOD Manager",
-    href: "/admin/vods",
-    icon: Film,
-    description: "Add, edit, and remove match VODs",
-  },
-  {
-    label: "Master Sheet",
-    href: "/admin/sheets",
-    icon: FileSpreadsheet,
-    description: "View and edit the master spreadsheet",
-  },
-];
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+import {
+  Users, Shield, ClipboardList, Calendar, FileEdit,
+  FileCheck, Newspaper, Twitter, Tv, Layers, Trophy,
+} from "lucide-react";
+
+import { TeamsTab } from "@/components/admin/TeamsTab";
+import { PlayersTab } from "@/components/admin/PlayersTab";
+import { RostersTab } from "@/components/admin/RostersTab";
+import { ScheduleTab } from "@/components/admin/ScheduleTab";
+import { DraftBoardTab } from "@/components/admin/DraftBoardTab";
+import { ApplicationsTab } from "@/components/admin/ApplicationsTab";
+import { ArticlesTab } from "@/components/admin/ArticlesTab";
+import { TwitterTab } from "@/components/admin/TwitterTab";
+import { TwitchTab } from "@/components/admin/TwitchTab";
+import { DivisionsTab } from "@/components/admin/DivisionsTab";
+import { SeasonsTab } from "@/components/admin/SeasonsTab";
+
+const ADMIN_TABS = [
+  { label: "Teams", icon: Shield },
+  { label: "Players", icon: Users },
+  { label: "Rosters", icon: ClipboardList },
+  { label: "Schedule", icon: Calendar },
+  { label: "Draft Board", icon: FileEdit },
+  { label: "Applications", icon: FileCheck },
+  { label: "Articles", icon: Newspaper },
+  { label: "Twitter", icon: Twitter },
+  { label: "Twitch", icon: Tv },
+  { label: "Divisions", icon: Layers },
+  { label: "Seasons", icon: Trophy },
+] as const;
+
+type AdminTab = (typeof ADMIN_TABS)[number]["label"];
 
 export default function AdminDashboard() {
+  const [activeTab, setActiveTab] = useState<AdminTab>("Teams");
+  const [refreshKey, setRefreshKey] = useState(0);
+  const refresh = () => setRefreshKey(k => k + 1);
+
+  const renderTab = () => {
+    switch (activeTab) {
+      case "Teams": return <TeamsTab key={refreshKey} onRefresh={refresh} />;
+      case "Players": return <PlayersTab key={refreshKey} />;
+      case "Rosters": return <RostersTab key={refreshKey} />;
+      case "Schedule": return <ScheduleTab key={refreshKey} />;
+      case "Draft Board": return <DraftBoardTab key={refreshKey} />;
+      case "Applications": return <ApplicationsTab key={refreshKey} />;
+      case "Articles": return <ArticlesTab key={refreshKey} />;
+      case "Twitter": return <TwitterTab key={refreshKey} />;
+      case "Twitch": return <TwitchTab key={refreshKey} />;
+      case "Divisions": return <DivisionsTab key={refreshKey} onRefresh={refresh} />;
+      case "Seasons": return <SeasonsTab key={refreshKey} />;
+    }
+  };
+
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {quickLinks.map((link) => (
-          <Link key={link.href} href={link.href}>
-            <Card hover className="h-full">
-              <link.icon className="h-8 w-8 text-fpl-accent mb-3" />
-              <h3 className="font-semibold mb-1">{link.label}</h3>
-              <p className="text-fpl-muted text-sm">{link.description}</p>
-            </Card>
-          </Link>
-        ))}
+      {/* Horizontal tab bar */}
+      <div className="bg-bg2 border-b-2 border-accent overflow-x-auto">
+        <div className="max-w-7xl mx-auto px-4 flex gap-0">
+          {ADMIN_TABS.map(({ label, icon: Icon }) => (
+            <button
+              key={label}
+              onClick={() => setActiveTab(label)}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-3 text-xs font-heading font-semibold uppercase tracking-wider transition-colors cursor-pointer border-b-2 -mb-[2px] whitespace-nowrap",
+                activeTab === label
+                  ? "text-text-bright border-b-accent bg-bg-input"
+                  : "text-text-secondary hover:text-text-bright border-b-transparent"
+              )}
+            >
+              <Icon className="h-3.5 w-3.5" />
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <Card>
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="font-semibold mb-1">Google Sheets Master Doc</h3>
-            <p className="text-fpl-muted text-sm">
-              Open the master spreadsheet directly in Google Sheets
-            </p>
-          </div>
-          <a
-            href={GOOGLE_SHEETS_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-fpl-accent hover:bg-fpl-accent-hover text-white font-medium px-4 py-2 rounded-lg text-sm transition-colors"
-          >
-            Open Sheet <ExternalLink className="h-4 w-4" />
-          </a>
-        </div>
-      </Card>
+      {/* Tab content */}
+      <div className="max-w-7xl mx-auto px-4 py-6">{renderTab()}</div>
     </div>
   );
 }

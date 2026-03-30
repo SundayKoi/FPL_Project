@@ -1,24 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-fpl-primary: #0e3050;
-  --color-fpl-dark: #001f34;
-  --color-fpl-accent: #1a8fc4;
-  --color-fpl-accent-hover: #1578a8;
-  --color-fpl-light: #e8f4fd;
-  --color-fpl-border: #1a3a5c;
-  --color-fpl-card: #0a2640;
-  --color-fpl-muted: #8ba3bd;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-heading: 'Oswald', sans-serif;
+  --font-body: 'Source Sans 3', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --color-bg: var(--bg);
+  --color-bg2: var(--bg2);
+  --color-bg3: var(--bg3);
+  --color-bg-input: var(--bg-input);
+  --color-border: var(--clr-border);
+  --color-text: var(--clr-text);
+  --color-text-bright: var(--text-bright);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-dim: var(--text-dim);
+  --color-accent: var(--clr-accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-green: var(--clr-green);
+  --color-red: var(--clr-red);
+  --color-gold: var(--clr-gold);
+  --color-blue: var(--clr-blue);
+}
+
+:root {
+  --bg: #001f34;
+  --bg2: #0a2640;
+  --bg3: #0e3050;
+  --bg-input: #122d47;
+  --clr-border: #1a3a5c;
+  --clr-text: #c8d8e8;
+  --text-bright: #ffffff;
+  --text-secondary: #8ba3bd;
+  --text-muted: #5a7a96;
+  --text-dim: #3d5a73;
+  --clr-accent: #1a8fc4;
+  --accent-hover: #1578a8;
+  --clr-green: #10b981;
+  --clr-red: #ef4444;
+  --clr-gold: #d7a52a;
+  --clr-blue: #3b82f6;
 }
 
 @layer base {
+  html {
+    background-color: var(--bg);
+    color: var(--clr-text);
+  }
   body {
-    @apply bg-fpl-dark text-white antialiased;
+    font-family: 'Source Sans 3', sans-serif;
+    @apply antialiased;
   }
 }
 
 @layer components {
-  .glass-card {
-    @apply bg-fpl-card/80 backdrop-blur-sm border border-fpl-border rounded-xl;
+  .card {
+    background-color: var(--bg2);
+    border: 1px solid var(--clr-border);
+    border-radius: 0.5rem;
   }
+  .card-dark {
+    background-color: var(--bg3);
+    border: 1px solid var(--clr-border);
+    border-radius: 0.5rem;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--clr-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
