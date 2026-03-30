@@ -23,7 +23,6 @@ import { StandingsView } from "@/components/views/StandingsView";
 import { StatsView } from "@/components/views/StatsView";
 import { TeamsView } from "@/components/views/TeamsView";
 import { PlayersView } from "@/components/views/PlayersView";
-import { DraftBoard } from "@/components/views/DraftBoard";
 
 import { Loader2 } from "lucide-react";
 
@@ -67,11 +66,9 @@ export default function Home() {
       case "Standings":
         return <StandingsView standings={data.standings} isMobile={isMobile} />;
       case "Stats":
-        return <StatsView players={data.players} isMobile={isMobile} />;
+        return <StatsView />;
       case "Teams":
         return <TeamsView teams={data.teams} rosters={data.rosters} standings={data.standings} isMobile={isMobile} />;
-      case "Draft Board":
-        return <DraftBoard teams={data.teams} />;
       default:
         return renderHomeTab();
     }

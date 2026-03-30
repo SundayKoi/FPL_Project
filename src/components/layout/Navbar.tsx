@@ -5,7 +5,7 @@ import { Menu, X, Shield } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-export const TABS = ["Home", "Scores", "Schedule", "Standings", "Stats", "Teams", "Draft Board"] as const;
+export const TABS = ["Home", "Scores", "Schedule", "Standings", "Stats", "Teams"] as const;
 export type Tab = (typeof TABS)[number];
 
 interface NavbarProps {

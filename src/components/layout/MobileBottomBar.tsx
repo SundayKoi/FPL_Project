@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Trophy, BarChart3, Users, FileEdit } from "lucide-react";
+import { Home, Trophy, BarChart3, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Tab } from "./Navbar";
 
@@ -10,7 +10,6 @@ const tabs: { label: Tab; icon: typeof Home }[] = [
   { label: "Standings", icon: BarChart3 },
   { label: "Stats", icon: BarChart3 },
   { label: "Teams", icon: Users },
-  { label: "Draft Board", icon: FileEdit },
 ];
 
 interface Props {
@@ -33,7 +32,7 @@ export function MobileBottomBar({ activeTab, onTabChange }: Props) {
           >
             <Icon className="h-4 w-4" />
             <span className="text-[9px] font-heading font-semibold uppercase tracking-wider leading-none">
-              {label === "Draft Board" ? "Draft" : label}
+              {label}
             </span>
           </button>
         ))}
